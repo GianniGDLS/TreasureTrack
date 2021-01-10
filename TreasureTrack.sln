@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TreasureTrack", "TreasureTrack\TreasureTrack.csproj", "{A8C4D3AE-CAA8-4DA4-B4C8-F8A68740CA38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreasureTrack.Tests", "TreasureTrack.Tests\TreasureTrack.Tests.csproj", "{B6ED65B4-2FFF-4CEF-8850-3CCF7F9B237B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8C4D3AE-CAA8-4DA4-B4C8-F8A68740CA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8C4D3AE-CAA8-4DA4-B4C8-F8A68740CA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8C4D3AE-CAA8-4DA4-B4C8-F8A68740CA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C4D3AE-CAA8-4DA4-B4C8-F8A68740CA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6ED65B4-2FFF-4CEF-8850-3CCF7F9B237B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6ED65B4-2FFF-4CEF-8850-3CCF7F9B237B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6ED65B4-2FFF-4CEF-8850-3CCF7F9B237B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6ED65B4-2FFF-4CEF-8850-3CCF7F9B237B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB466198-D1F0-49CF-AE41-F581B2281FF6}
+	EndGlobalSection
+EndGlobal
