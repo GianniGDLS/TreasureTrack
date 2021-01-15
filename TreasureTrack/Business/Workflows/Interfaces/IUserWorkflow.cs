@@ -12,6 +12,5 @@ namespace TreasureTrack.Business.Workflows.Interfaces
         Task<UserDto> UpdateUserAsync(UpdateUserDto user);
         Task ResetPasswordAsync(int userId, string password);
         Task<UserDto> LoginAsync(string email, string password);
-        Task ActivateRegistrationAsync(int userId);
     }
 }

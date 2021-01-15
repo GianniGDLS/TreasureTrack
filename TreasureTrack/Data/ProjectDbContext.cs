@@ -12,6 +12,7 @@ namespace TreasureTrack.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Log> Logs { get; set; }
         //public DbSet<Puzzle> Puzzles { get; set; }
         //public DbSet<Attempt> Attempts { get; set; }
 

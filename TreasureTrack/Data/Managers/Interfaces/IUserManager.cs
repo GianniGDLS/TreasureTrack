@@ -13,5 +13,6 @@ namespace TreasureTrack.Data.Managers.Interfaces
         Task ResetPasswordAsync(int userId, string hashedPassword);
         Task<bool> EmailInUseAsync(string email);
         Task ActivateRegistrationAsync(int userId);
+        Task SavePaymentIdForUserAsync(int userId, string paymentId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using TreasureTrack.Data.Entities;
 using TreasureTrack.Data.Managers.Interfaces;
@@ -38,7 +39,7 @@ namespace TreasureTrack.Data.Managers
 
         public async Task<User> GetUserAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email.ToUpper() == email.ToUpper());
         }
 
         public async Task DeleteUserAsync(int userId)
@@ -57,12 +58,19 @@ namespace TreasureTrack.Data.Managers
 
         public async Task<bool> EmailInUseAsync(string email)
         {
-            return _context.Users.Select(x => x.Email).Contains(email);
+            return await _context.Users.AnyAsync(x => string.Equals(x.Email.ToUpper(), email.ToUpper()));
+        }
+
+        public async Task SavePaymentIdForUserAsync(int userId, string paymentId)
+        {
+            var user = await GetUserAsync(userId);
+            user.PaymentId = paymentId;
+            await _context.SaveChangesAsync();
         }
 
         public async Task ActivateRegistrationAsync(int userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await GetUserAsync(userId);
             user.SuccessfullyPaid = true;
             await _context.SaveChangesAsync();
         }
