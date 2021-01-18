@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TreasureTrack.Business.Entities;
+using TreasureTrack.Business.Helpers;
 using TreasureTrack.Business.Workflows.Interfaces;
 using TreasureTrack.Controllers.Contracts.V1;
 
@@ -69,29 +71,37 @@ namespace TreasureTrack.Controllers
             var result = await _userWorkflow.LoginAsync(request.Email, request.Password);
             if (result is null)
                 return NotFound();
-            
+
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, result.Email),
                 };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity));
+                new ClaimsPrincipal(claimsIdentity),
+                new AuthenticationProperties 
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMinutes(30),
+                    IsPersistent = true
+                });
             return Ok(_mapper.Map<GetUserResponse>(result));
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> LogoutAsync()
         {
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
             return Ok();
         }
 
-        [HttpPost("activate")]
-        public async Task<IActionResult> MarkRegisterAsPaid(int userId)
+        [HttpGet("account")]
+        public async Task<IActionResult> GetAccountAsync()
         {
-            await _userWorkflow.ActivateRegistrationAsync(userId);
-            return Ok();
+            var user = await _userWorkflow.GetUserAsync(HttpContext.User.Identity.Name);
+            if (user is null)
+                return NotFound();
+            return Ok(_mapper.Map<GetUserResponse>(user));
         }
     }
 }

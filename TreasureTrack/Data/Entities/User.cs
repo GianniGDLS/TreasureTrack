@@ -15,7 +15,8 @@ namespace TreasureTrack.Data.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public bool SuccessfullyPaid { get; set; }
+        public string PaymentId { get; set; }
 
-        public List<Puzzle> Puzzles { get; set; }
+        //public List<Puzzle> Puzzles { get; set; }
     }
 }

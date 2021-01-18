@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
+using System;
 using TreasureTrack.Data;
 
 namespace TreasureTrack.Infrastructure.Setup
@@ -28,24 +29,27 @@ namespace TreasureTrack.Infrastructure.Setup
                   {
                       options.Cookie.SameSite = SameSiteMode.None;
                       options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                      options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
+                      options.Cookie.Name = "TreasureTrack";
                       options.Cookie.HttpOnly = false;
                   });
 
             services.AddAutoMapper();
             services.RegisterManagers();
             services.RegisterWorkflows();
+            services.RegisterClients();
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
                 builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithOrigins("http://localhost:3000","https://treasuretrack.be")
+                .WithOrigins("http://localhost:3000", "https://treasuretrack.be")
                 .AllowCredentials();
             }));
 
             services.AddDbContext<ProjectDbContext>(options =>
-              options.UseMySql(
+              options.UseNpgsql(
                   Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers()

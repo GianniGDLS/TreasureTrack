@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace TreasureTrack.Data.Entities
 {
-    public class Puzzle
+    public class Stage
     {
-        public Puzzle()
+        public Stage()
         {
             Attempts = new List<Attempt>();
             AttemptCount = Attempts.Count;
