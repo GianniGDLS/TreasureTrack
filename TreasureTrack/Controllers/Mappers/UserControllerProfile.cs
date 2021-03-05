@@ -11,6 +11,8 @@ namespace TreasureTrack.Controllers.Mappers
             CreateMap<RegisterUserRequest, CreateUserDto>();
             CreateMap<UpdateUserRequest, UpdateUserDto>();
             CreateMap<UserDto, GetUserResponse>();
+            CreateMap<StageDto, GetStageResponse>();
+            CreateMap<AttemptDto, GetAttemptResponse>();
         }
     }
 }

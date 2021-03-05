@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace TreasureTrack.Data.Entities
+namespace TreasureTrack.Controllers.Contracts.V1
 {
-    public class Stage
+    public class GetStageResponse
     {
         public int StageId { get; set; }
         public string Name { get; set; }
-        public string CodeWord { get; set; }
         public string ChildCodeWord { get; set; }
         public bool CodeWordGuessed { get; set; }
 
-        public List<Attempt> Attempts { get; set; }
-        public User User { get; set; }
+        public List<GetAttemptResponse> Attempts { get; set; }
     }
 }

@@ -1,21 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>f2ad68ef-3a16-4873-8211-0b12890e6a3a</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Migrations\20210107152916_Init.cs" />
-    <Compile Remove="Migrations\20210107152916_Init.Designer.cs" />
-    <Compile Remove="Migrations\20210110133319_AddPuzzles.cs" />
-    <Compile Remove="Migrations\20210110133319_AddPuzzles.Designer.cs" />
-    <Compile Remove="Migrations\20210111111928_Init.cs" />
-    <Compile Remove="Migrations\20210111111928_Init.Designer.cs" />
-    <Compile Remove="Migrations\20210111150344_Init.cs" />
-    <Compile Remove="Migrations\20210111150344_Init.Designer.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
@@ -38,16 +27,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.6.3" />
   </ItemGroup>
-
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="App_Data\TreasureTrack.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace TreasureTrack.Data.Entities
+namespace TreasureTrack.Business.Entities
 {
-    public class Stage
+    public class StageDto
     {
         public int StageId { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,6 @@ namespace TreasureTrack.Data.Entities
         public string ChildCodeWord { get; set; }
         public bool CodeWordGuessed { get; set; }
 
-        public List<Attempt> Attempts { get; set; }
-        public User User { get; set; }
+        public List<AttemptDto> Attempts { get; set; }
     }
 }

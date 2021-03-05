@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Mollie.Api.Client;
-using Mollie.Api.Models;
-using Mollie.Api.Models.Payment;
-using Mollie.Api.Models.Payment.Request;
-using Mollie.Api.Models.Payment.Response;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TreasureTrack.Business.Entities;
 using TreasureTrack.Business.Helpers;
@@ -40,7 +36,7 @@ namespace TreasureTrack.Business.Workflows
             }
             catch (Exception e)
             {
-                await _logManager.WriteLogAsync(e.Message);
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(CreateUserAsync)} : {e.Message}");
                 throw;
             }
             return _mapper.Map<UserDto>(result);
@@ -55,7 +51,7 @@ namespace TreasureTrack.Business.Workflows
             }
             catch (Exception e)
             {
-                await _logManager.WriteLogAsync(e.Message, user.UserId);
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(UpdateUserAsync)} : {e.Message}", user.UserId);
                 throw;
             }
             return _mapper.Map<UserDto>(result);
@@ -89,7 +85,7 @@ namespace TreasureTrack.Business.Workflows
             }
             catch (Exception e)
             {
-                await _logManager.WriteLogAsync(e.Message, userId);
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(ResetPasswordAsync)} : {e.Message}", userId);
                 throw;
             }
         }
@@ -104,6 +100,53 @@ namespace TreasureTrack.Business.Workflows
             throw new Exception("incorrect password provided");
         }
 
-       
+        public async Task<UserDto> SubmitAttemptAsync(int userId, int stageId, string codeWord, bool childAttempt)
+        {
+            User result;
+            try
+            {
+                result = await _userManager.SubmitAttemptAsync(userId, stageId, codeWord.Trim(), childAttempt);
+            }
+            catch (Exception e)
+            {
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(SubmitAttemptAsync)} : {e.Message}", userId);
+                throw;
+            }
+            return _mapper.Map<UserDto>(result);
+        }
+
+        public async Task<UserDto> DeactivateUserAsync(int userId)
+        {
+            User user;
+            try
+            {
+                user = await _userManager.DeactivateUserAsync(userId);
+            }
+            catch (Exception e)
+            {
+
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(DeactivateUserAsync)} : {e.Message}", userId);
+                throw;
+            }
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto> RemoveTestDataFromUserAsync(int userId)
+        {
+            var result = await _userManager.RemoveTestDataFromUserAsync(userId);
+            return _mapper.Map<UserDto>(result);
+        }
+
+        public async Task<List<UserDto>> GetDisabledUsersAsync()
+        {
+            var users = await _userManager.GetDisabledUsersAsync();
+            return _mapper.Map<List<UserDto>>(users);
+        }
+
+        public async Task<List<UserDto>> GetGuessedStageUsersAsync(string stageName)
+        {
+            var users = await _userManager.GetGuessedStageUsersAsync(stageName);
+            return _mapper.Map<List<UserDto>>(users);
+        }
     }
 }

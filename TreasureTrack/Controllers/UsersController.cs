@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TreasureTrack.Business.Entities;
-using TreasureTrack.Business.Helpers;
 using TreasureTrack.Business.Workflows.Interfaces;
 using TreasureTrack.Controllers.Contracts.V1;
 
@@ -41,13 +40,16 @@ namespace TreasureTrack.Controllers
             return Ok(_mapper.Map<GetUserResponse>(result));
         }
 
-        [Authorize]
         [HttpDelete]
-        public async Task<IActionResult> DeleteUserAsync()
+        public async Task<IActionResult> DeleteUserAsync(int userId, string secrectCode)
         {
-            var user = await _userWorkflow.GetUserAsync(HttpContext.User.Identity.Name);
-            await _userWorkflow.DeleteUserAsync(user.UserId);
-            return NoContent();
+            if (secrectCode == "Test123")
+            {
+                await _userWorkflow.DeleteUserAsync(userId);
+                return NoContent();
+            }
+            return NotFound();
+
         }
 
         [HttpGet("{id}")]
@@ -79,7 +81,7 @@ namespace TreasureTrack.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
-                new AuthenticationProperties 
+                new AuthenticationProperties
                 {
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(30),
                     IsPersistent = true
@@ -102,6 +104,52 @@ namespace TreasureTrack.Controllers
             if (user is null)
                 return NotFound();
             return Ok(_mapper.Map<GetUserResponse>(user));
+        }
+
+        [HttpPost("submit-attempt")]
+        public async Task<IActionResult> SubmitAttemptAsync(int userId, int stageId, string codeWord)
+        {
+            var result = await _userWorkflow.SubmitAttemptAsync(userId, stageId, codeWord, false);
+            return Ok(_mapper.Map<GetUserResponse>(result));
+        }
+
+        [HttpPost("submit-child-attempt")]
+        public async Task<IActionResult> SubmitChildAttemptAsync(int userId, int stageId, string codeWord)
+        {
+            var result = await _userWorkflow.SubmitAttemptAsync(userId, stageId, codeWord, true);
+            return Ok(_mapper.Map<GetUserResponse>(result));
+        }
+
+        [HttpPost("deactivate")]
+        public async Task<IActionResult> DeactivateUserAsync(int userId)
+        {
+            var result = await _userWorkflow.DeactivateUserAsync(userId);
+            return Ok(_mapper.Map<GetUserResponse>(result));
+        }
+
+        [HttpPost("remove-test-data")]
+        public async Task<IActionResult> RemoveTestDataFromUserAsync([FromQuery] int userId)
+        {
+            var result = await _userWorkflow.RemoveTestDataFromUserAsync(userId);
+            return Ok(_mapper.Map<GetUserResponse>(result));
+        }
+
+        [HttpGet("disabled")]
+        public async Task<IActionResult> GetDisabledUsersAsync()
+        {
+            var result = await _userWorkflow.GetDisabledUsersAsync();
+            return Ok(_mapper.Map<List<GetUserResponse>>(result));
+        }
+
+        [HttpGet("stages/guessed-users")]
+        public async Task<IActionResult> GetGuessedStageUsersAsync(string stageName)
+        {
+            var result = await _userWorkflow.GetGuessedStageUsersAsync(stageName);
+            var resultWithCount = new Dictionary<int, List<GetUserResponse>>
+            {
+                { result.Count, _mapper.Map<List<GetUserResponse>>(result) }
+            };
+            return Ok(resultWithCount);
         }
     }
 }

@@ -16,11 +16,11 @@ namespace TreasureTrack.Infrastructure.Setup
 {
     public class Startup
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,7 +50,7 @@ namespace TreasureTrack.Infrastructure.Setup
 
             services.AddDbContext<ProjectDbContext>(options =>
               options.UseNpgsql(
-                  Configuration.GetConnectionString("DefaultConnection")));
+                  _configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers()
                .AddNewtonsoftJson(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
@@ -64,7 +64,7 @@ namespace TreasureTrack.Infrastructure.Setup
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ProjectDbContext context)
         {
-            context.Database.Migrate();
+            //context.Database.Migrate();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

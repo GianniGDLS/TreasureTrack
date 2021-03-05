@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TreasureTrack.Data.Entities;
 
 namespace TreasureTrack.Data.Managers.Interfaces
@@ -14,5 +15,10 @@ namespace TreasureTrack.Data.Managers.Interfaces
         Task<bool> EmailInUseAsync(string email);
         Task ActivateRegistrationAsync(int userId);
         Task SavePaymentIdForUserAsync(int userId, string paymentId);
+        Task<User> SubmitAttemptAsync(int userId, int stageId, string codeWord, bool childAttempt);
+        Task<User> DeactivateUserAsync(int userId);
+        Task<User> RemoveTestDataFromUserAsync(int userId);
+        Task<List<User>> GetDisabledUsersAsync();
+        Task<List<User>> GetGuessedStageUsersAsync(string stageName);
     }
 }

@@ -54,7 +54,7 @@ namespace TreasureTrack.Business.Workflows
             }
             catch (Exception e)
             {
-                await _logManager.WriteLogAsync(e.Message, userId);
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(RequestPaymentAsync)} : {e.Message}", userId);
                 throw;
             }
 
@@ -92,7 +92,7 @@ namespace TreasureTrack.Business.Workflows
             }
             catch (Exception e)
             {
-                await _logManager.WriteLogAsync(e.Message, userId);
+                await _logManager.WriteLogAsync($"logged from {GetType().Name} method {nameof(CheckPaymentStatusAsync)} : {e.Message}", userId);
                 throw;
             }
             return paymentResponse.Status;
